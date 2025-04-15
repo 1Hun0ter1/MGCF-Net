@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="columns">
+    <div class="column is-12">
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2"><i class="fas fa-history"></i></span>
+                    All Detection History
+                </p>
+            </header>
+            <div class="card-content">
+                {% if history %}
+                <div class="table-container">
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>URL</th>
+                                <th>Detection Result</th>
+                                <th>Confidence</th>
+                                <th>Detection Time</th>
+                                <th>Model Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in history %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td>
+                                    {% if item.user %}
+                                    <a href="{{ url_for('admin_edit_user', id=item.user.id) }}">{{ item.user.username }}</a>
+                                    {% else %}
+                                    <span class="tag is-light">Anonymous User</span>
+                                    {% endif %}
+                                </td>
+                                <td title="{{ item.url }}">{{ item.url[:30] }}{% if item.url|length > 30 %}...{% endif %}</td>
+                                <td>
+                                    {% if 'phishing' in item.result %}
+                                    <span class="tag is-danger">{{ item.result }}</span>
+                                    {% else %}
+                                    <span class="tag is-success">{{ item.result }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ "%.2f"|format(item.confidence * 100) }}%</td>
+                                <td>{{ item.check_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ item.model_used }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="notification is-info is-light">
+                    <p>No detection history records yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

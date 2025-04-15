@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="columns is-centered">
+    <div class="column is-12-mobile is-8-tablet is-6-desktop is-5-widescreen">
+        <div class="login-container">
+            <div class="box animate__animated animate__fadeIn">
+                <div class="has-text-centered mb-5">
+                    <span class="icon is-large">
+                        <i class="fas fa-user-plus fa-3x has-text-primary"></i>
+                    </span>
+                    <h1 class="title has-text-primary mt-2">Register</h1>
+                    <p class="subtitle is-6 has-text-grey">Create a new account to start using Phishing URL Detection</p>
+                </div>
+                
+                <form method="POST" id="registerForm">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="field">
+                        <label class="label">{{ form.username.label }}</label>
+                        <div class="control has-icons-left">
+                            {{ form.username(class="input", placeholder="Create your username") }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </div>
+                        {% if form.username.errors %}
+                        <p class="help is-danger">
+                            {% for error in form.username.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">{{ form.email.label }}</label>
+                        <div class="control has-icons-left">
+                            {{ form.email(class="input", placeholder="Enter your email") }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </div>
+                        {% if form.email.errors %}
+                        <p class="help is-danger">
+                            {% for error in form.email.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">{{ form.password.label }}</label>
+                        <div class="control has-icons-left">
+                            {{ form.password(class="input", placeholder="Create your password") }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </div>
+                        {% if form.password.errors %}
+                        <p class="help is-danger">
+                            {% for error in form.password.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">{{ form.password2.label }}</label>
+                        <div class="control has-icons-left">
+                            {{ form.password2(class="input", placeholder="Enter your password again") }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </div>
+                        {% if form.password2.errors %}
+                        <p class="help is-danger">
+                            {% for error in form.password2.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class="button is-primary is-fullwidth" id="registerButton">
+                                <span class="icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </span>
+                                <span>Register</span>
+                            </button>
+                            
+                            <!-- Loading Animation (Hidden State) -->
+                            <div class="loading-container has-text-centered is-hidden" id="loadingAnimation">
+                                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                <p class="has-text-grey mt-2">Creating account...</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="has-text-centered mt-5">
+                    <p class="has-text-grey">Already have an account? <a href="{{ url_for('login') }}" class="has-text-primary has-text-weight-bold">Login Now</a></p>
+                </div>
+                
+                <!-- Security Tips Section -->
+                <div class="mt-5 pt-5 has-text-centered" style="border-top: 1px solid #f0f0f0;">
+                    <h5 class="title is-6 has-text-grey mb-4">Account Security Tips</h5>
+                    <div class="columns is-mobile">
+                        <div class="column">
+                            <span class="icon has-text-primary">
+                                <i class="fas fa-key"></i>
+                            </span>
+                            <p class="is-size-7 has-text-grey mt-2">Use Strong Password</p>
+                        </div>
+                        <div class="column">
+                            <span class="icon has-text-primary">
+                                <i class="fas fa-envelope-open-text"></i>
+                            </span>
+                            <p class="is-size-7 has-text-grey mt-2">Use Real Email</p>
+                        </div>
+                        <div class="column">
+                            <span class="icon has-text-primary">
+                                <i class="fas fa-shield-alt"></i>
+                            </span>
+                            <p class="is-size-7 has-text-grey mt-2">Update Password Regularly</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Loading Animation Style */
+.loading-container {
+    margin: 1rem auto;
+}
+.lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    margin: 4px;
+    border: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: var(--primary-color) transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const registerForm = document.getElementById('registerForm');
+    const registerButton = document.getElementById('registerButton');
+    const loadingAnimation = document.getElementById('loadingAnimation');
+    
+    registerForm.addEventListener('submit', function(e) {
+        // Show loading animation
+        registerButton.classList.add('is-hidden');
+        loadingAnimation.classList.remove('is-hidden');
+    });
+});
+</script>
+{% endblock %} 

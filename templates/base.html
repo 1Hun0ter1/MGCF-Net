@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} - Phishing URL Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
+    <!-- Add Chart.js library -->
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
+    <!-- Add animation library -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --danger-color: #f72585;
+            --success-color: #4cc9f0;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #2b2d42;
+            --text-light: #8d99ae;
+        }
+
+        /* Sticky Footer Settings */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            flex: 1 0 auto;
+            padding-bottom: 2rem;
+        }
+        
+        .footer {
+            flex-shrink: 0;
+            padding: 2rem 1.5rem;
+            background-color: var(--card-background);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: auto;
+        }
+
+        /* Global Rounded Corner Design */
+        .card, .button, .input, .notification, .select select, .result-box, .box, .navbar {
+            border-radius: 12px !important;
+        }
+
+        /* Navigation Bar Style */
+        .hero.is-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .hero-body {
+            padding: 2rem 1.5rem;
+        }
+        
+        .navbar {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background-color: var(--card-background);
+            margin-bottom: 1.5rem;
+        }
+        
+        .navbar-item img {
+            max-height: 2.5rem;
+        }
+        
+        /* Button Style */
+        .button {
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .button.is-primary {
+            background-color: var(--primary-color);
+        }
+        
+        .button.is-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Card and Container Style */
+        .card {
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: rgba(67, 97, 238, 0.05);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+        }
+        
+        .card-header-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Result Display Style */
+        .phishing {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+        
+        .legitimate {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        
+        .result-box {
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .result-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .result-box.is-danger {
+            background-color: #fff5f7;
+            border: 1px solid var(--danger-color);
+        }
+        
+        .result-box.is-success {
+            background-color: #f6fef9;
+            border: 1px solid var(--success-color);
+        }
+        
+        /* Input Box Style */
+        .input, .select select {
+            transition: all 0.3s ease;
+            border: 1px solid #e1e1e1;
+        }
+        
+        .input:focus, .select select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+        
+        /* Login Container Style */
+        .login-container {
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+        
+        .login-container .box {
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .login-container .box:hover {
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+        
+        /* Notification Style */
+        .notification {
+            border-radius: 12px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        /* Animation Effect */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 1rem;
+        }
+        
+        /* Progress Bar */
+        .progress {
+            height: 8px;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        
+        .progress.is-small {
+            height: 4px;
+        }
+        
+        /* Shadow Effect */
+        .has-shadow {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+        }
+        
+        /* Container Layout Optimization */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+        
+        /* Responsive Improvements */
+        @media screen and (max-width: 768px) {
+            .section {
+                padding: 2rem 1rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .columns {
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
+            }
+            
+            .column {
+                padding: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{{ url_for('home') }}">
+                    <span class="icon has-text-primary">
+                        <i class="fas fa-shield-alt"></i>
+                    </span>
+                    <span class="has-text-primary has-text-weight-bold">Phishing URL Detection System</span>
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasic" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="{{ url_for('home') }}">
+                        Home
+                    </a>
+                    
+                    {% if request.endpoint == 'home' %}
+                    <!-- Navigation items only shown on the homepage -->
+                    <a class="navbar-item" href="#features">
+                        <span class="icon-text">
+                            <span class="icon"><i class="fas fa-star"></i></span>
+                            <span>Features</span>
+                        </span>
+                    </a>
+                    <a class="navbar-item" href="#statistics">
+                        <span class="icon-text">
+                            <span class="icon"><i class="fas fa-chart-bar"></i></span>
+                            <span>Statistics</span>
+                        </span>
+                    </a>
+                    <a class="navbar-item" href="#technology">
+                        <span class="icon-text">
+                            <span class="icon"><i class="fas fa-microchip"></i></span>
+                            <span>Technology</span>
+                        </span>
+                    </a>
+                    {% else %}
+                    <a class="navbar-item" href="{{ url_for('index') }}">
+                        URL Detection
+                    </a>
+                    
+                    {% if current_user.is_authenticated %}
+                    <a class="navbar-item" href="{{ url_for('profile') }}">
+                        Profile
+                    </a>
+                    {% endif %}
+                    
+                    {% if current_user.is_admin %}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            Admin
+                        </a>
+                        
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{{ url_for('admin_users') }}">
+                                User Management
+                            </a>
+                            <a class="navbar-item" href="{{ url_for('admin_history') }}">
+                                Detection History
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            {% if request.endpoint == 'home' %}
+                            <a class="button is-primary" href="{{ url_for('index') }}">
+                                <span class="icon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span>Start Detection</span>
+                            </a>
+                            {% endif %}
+                            
+                            {% if current_user.is_authenticated %}
+                            <a class="button is-light" href="{{ url_for('logout') }}">
+                                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                                <span>Logout</span>
+                            </a>
+                            {% else %}
+                            {% if request.endpoint != 'home' %}
+                            <a class="button is-primary" href="{{ url_for('register') }}">
+                                <span class="icon"><i class="fas fa-user-plus"></i></span>
+                                <span>Register</span>
+                            </a>
+                            {% endif %}
+                            <a class="button is-light" href="{{ url_for('login') }}">
+                                <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
+                                <span>Login</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="container mt-4">
+        {% for message in messages %}
+        <div class="notification is-info is-light animate__animated animate__fadeIn">
+            <button class="delete"></button>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Main content -->
+    <div class="main-content">
+        <section class="section">
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong class="has-text-primary">Phishing URL Detection System</strong> - Protecting Your Online Security
+            </p>
+            <p>
+                <small class="has-text-grey">&copy; {{ now.year }} Secure Network Systems Course</small>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hamburger menu toggle
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            if ($navbarBurgers.length > 0) {
+                $navbarBurgers.forEach( el => {
+                    el.addEventListener('click', () => {
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
+            }
+            
+            // Close notifications
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+                $delete.addEventListener('click', () => {
+                    $notification.classList.add('animate__fadeOut');
+                    setTimeout(() => {
+                        $notification.parentNode.removeChild($notification);
+                    }, 500);
+                });
+            });
+        });
+    </script>
+    
+    <!-- Add Chart.js initialization code here -->
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

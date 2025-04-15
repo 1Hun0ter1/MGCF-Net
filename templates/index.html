@@ -1,0 +1,669 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="columns is-centered">
+    <div class="column is-10-tablet is-8-desktop">
+        <!-- Title Section -->
+        <h1 class="title has-text-centered has-text-primary mb-5 fade-in">
+            <span class="icon"><i class="fas fa-shield-alt"></i></span>
+            <span>Phishing URL Detection System</span>
+        </h1>
+        <div class="subtitle has-text-centered has-text-grey mb-5 fade-in">Protect your online security and identify potential phishing threats</div>
+        
+        <!-- Detection Form -->
+        <div class="card fade-in">
+            <header class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2"><i class="fas fa-search"></i></span>
+                    URL Security Detection
+                </p>
+            </header>
+            <div class="card-content">
+                <form method="post" action="{{ url_for('index') }}" enctype="multipart/form-data" id="urlCheckForm">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- 添加隐藏字段存储当前活动选项卡 -->
+                    <input type="hidden" name="active_tab" id="active_tab" value="{{ active_tab or 'single' }}">
+                    
+                    <!-- Tabs -->
+                    <div class="tabs is-boxed mb-4">
+                        <ul>
+                            <li class="{{ 'is-active' if active_tab != 'bulk' and active_tab != 'file' else '' }}" id="tab-single">
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-link"></i></span>
+                                    <span>Single URL Detection</span>
+                                </a>
+                            </li>
+                            <li class="{{ 'is-active' if active_tab == 'bulk' else '' }}" id="tab-bulk">
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-list"></i></span>
+                                    <span>Batch URL Detection</span>
+                                </a>
+                            </li>
+                            <li class="{{ 'is-active' if active_tab == 'file' else '' }}" id="tab-file">
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-file-upload"></i></span>
+                                    <span>File Upload Detection</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Single URL Input -->
+                    <div id="content-single" class="tab-content {{ 'is-hidden' if active_tab == 'bulk' or active_tab == 'file' else '' }}">
+                        <div class="field">
+                            <label class="label">{{ form.url.label }}</label>
+                            <div class="control has-icons-left">
+                                {{ form.url(class="input", placeholder="Enter URL to detect") }}
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-globe"></i>
+                                </span>
+                            </div>
+                            {% for error in form.url.errors %}
+                            <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Batch URL Input -->
+                    <div id="content-bulk" class="tab-content {{ '' if active_tab == 'bulk' else 'is-hidden' }}">
+                        <div class="field">
+                            <label class="label">{{ form.bulk_urls.label }}</label>
+                            <div class="control">
+                                {{ form.bulk_urls(class="textarea", rows="5", placeholder="Enter one URL per line for batch detection") }}
+                            </div>
+                            <p class="help">{{ form.bulk_urls.description }}</p>
+                            {% for error in form.bulk_urls.errors %}
+                            <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- File Upload - Simplified UI -->
+                    <div id="content-file" class="tab-content {{ '' if active_tab == 'file' else 'is-hidden' }}">
+                        <div class="field">
+                            <label class="label">{{ form.url_file.label }}</label>
+                            <div class="file-upload-container">
+                                <div class="file-drop-zone" id="drop-zone">
+                                    <div class="file-drop-content">
+                                        <span class="icon is-large">
+                                            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                                        </span>
+                                        <p class="mt-3 mb-2">Drag files here or</p>
+                                        <div class="file is-small is-info">
+                                            <label class="file-label">
+                                                {{ form.url_file(class="file-input", id="url-file-input") }}
+                                                <span class="file-cta">
+                                                    <span class="file-icon">
+                                                        <i class="fas fa-upload"></i>
+                                                    </span>
+                                                    <span class="file-label">Choose File</span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <p class="file-name-display mt-3" id="file-name-display">No file selected</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="help">{{ form.url_file.description }}</p>
+                            {% for error in form.url_file.errors %}
+                            <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="field mt-5">
+                        <label class="label">{{ form.model.label }}</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                {{ form.model }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="field mt-4">
+                        <div class="control">
+                            <button type="submit" class="button is-primary is-fullwidth" id="submitButton">
+                                <span class="icon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span>Detect</span>
+                            </button>
+                            
+                            <!-- Loading Animation (Hidden State) -->
+                            <div class="loading-container has-text-centered is-hidden" id="loadingAnimation">
+                                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                <p class="has-text-grey mt-2">Detecting, please wait...</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Single URL Detection Results -->
+        {% if prediction %}
+        <div class="result-box {% if 'phishing' in prediction %}is-danger{% else %}is-success{% endif %} animate__animated animate__fadeIn">
+            <div class="columns is-multiline">
+                <div class="column is-12-mobile is-8-tablet">
+                    <h4 class="title is-5">Detection Result:
+                        <span class="{% if 'phishing' in prediction %}phishing{% else %}legitimate{% endif %}">
+                            {{ prediction }}
+                        </span>
+                    </h4>
+                    <p class="subtitle is-6">URL: <span class="has-text-weight-semibold">{{ url }}</span></p>
+                    
+                    <!-- Confidence Progress Bar -->
+                    <div class="mt-4">
+                        <div class="level mb-2">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <p>Confidence</p>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <p class="has-text-weight-bold">{{ "%.2f"|format(confidence * 100) }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <progress 
+                            class="progress {% if 'phishing' in prediction %}is-danger{% else %}is-success{% endif %}" 
+                            value="{{ confidence * 100 }}" 
+                            max="100">
+                            {{ "%.2f"|format(confidence * 100) }}%
+                        </progress>
+                    </div>
+                    
+                    <p class="mt-3">Model Used: <span class="has-text-weight-bold">{{ model_name }}</span></p>
+                    
+                    <div class="notification {% if 'phishing' in prediction %}is-danger{% else %}is-success{% endif %} is-light mt-4">
+                        <div class="columns is-vcentered">
+                            <div class="column is-2 has-text-centered">
+                                {% if 'phishing' in prediction %}
+                                <span class="icon is-large">
+                                    <i class="fas fa-exclamation-triangle fa-2x has-text-danger"></i>
+                                </span>
+                                {% else %}
+                                <span class="icon is-large">
+                                    <i class="fas fa-check-circle fa-2x has-text-success"></i>
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="column">
+                                {% if 'phishing' in prediction %}
+                                <p><strong>Warning:</strong> This URL may be a phishing website. Do not visit or provide any personal information.</p>
+                                {% else %}
+                                <p><strong>Safe:</strong> This URL appears to be safe. However, it's still recommended to remain vigilant.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-12-mobile is-4-tablet">
+                    <!-- Add Pie Chart -->
+                    <div class="chart-container">
+                        <canvas id="resultChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Batch Detection Results -->
+        {% if batch_results %}
+        <div class="card animate__animated animate__fadeIn mt-5">
+            <header class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2"><i class="fas fa-list-alt"></i></span>
+                    Batch Detection Results ({{ batch_results|length }} URLs)
+                </p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <div class="level mb-3">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <p class="subtitle is-6">Model Used: <span class="has-text-weight-bold">{{ model_name }}</span></p>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <div class="field has-addons">
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Search URL" id="searchInput">
+                                    </div>
+                                    <div class="control">
+                                        <a class="button is-primary">
+                                            <i class="fas fa-search"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="table is-fullwidth is-striped is-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>URL</th>
+                                    <th>Result</th>
+                                    <th>Confidence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in batch_results %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td class="url-cell">{{ result.url }}</td>
+                                    <td>
+                                        <span class="tag {% if 'phishing' in result.result %}is-danger{% else %}is-success{% endif %}">
+                                            {{ result.result }}
+                                        </span>
+                                    </td>
+                                    <td>{{ "%.2f"|format(result.confidence * 100) }}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination-container mt-4">
+                        <nav class="pagination is-centered is-small" role="navigation" aria-label="pagination">
+                            <a class="pagination-previous">Previous</a>
+                            <a class="pagination-next">Next</a>
+                            <ul class="pagination-list">
+                                <li><a class="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a></li>
+                                <li><a class="pagination-link" aria-label="Go to page 2">2</a></li>
+                                <li><a class="pagination-link" aria-label="Go to page 3">3</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if not current_user.is_authenticated %}
+        <div class="notification is-info is-light mt-5 animate__animated animate__fadeIn">
+            <p><span class="icon"><i class="fas fa-info-circle"></i></span> <strong>Tip:</strong> 
+                <a href="{{ url_for('login') }}">Login</a> or 
+                <a href="{{ url_for('register') }}">Register</a> 
+                to save detection history and access more features.
+            </p>
+        </div>
+        {% endif %}
+        
+        <!-- Feature introduction cards -->
+        <div class="columns is-multiline mt-6">
+            <div class="column is-12-mobile is-4-tablet">
+                <div class="card has-text-centered fade-in h-100">
+                    <div class="card-content">
+                        <div class="icon-container mb-4">
+                            <span class="icon is-large">
+                                <i class="fas fa-shield-alt fa-3x has-text-primary"></i>
+                            </span>
+                        </div>
+                        <h4 class="title is-5">High Accuracy</h4>
+                        <p class="has-text-grey">Our detection system uses advanced algorithms to provide highly accurate detection results.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-12-mobile is-4-tablet">
+                <div class="card has-text-centered fade-in h-100">
+                    <div class="card-content">
+                        <div class="icon-container mb-4">
+                            <span class="icon is-large">
+                                <i class="fas fa-bolt fa-3x has-text-primary"></i>
+                            </span>
+                        </div>
+                        <h4 class="title is-5">Real-time Detection</h4>
+                        <p class="has-text-grey">Quick response, real-time URL detection, immediate results to protect your security.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-12-mobile is-4-tablet">
+                <div class="card has-text-centered fade-in h-100">
+                    <div class="card-content">
+                        <div class="icon-container mb-4">
+                            <span class="icon is-large">
+                                <i class="fas fa-history fa-3x has-text-primary"></i>
+                            </span>
+                        </div>
+                        <h4 class="title is-5">History Records</h4>
+                        <p class="has-text-grey">Save detection history for easy tracking and management of your detected URLs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .h-100 {
+        height: 100%;
+    }
+    
+    .tab-content {
+        padding: 1rem 0;
+    }
+    
+    .url-cell {
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .table-container {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    
+    /* Simplified file upload area styles */
+    .file-upload-container {
+        margin-bottom: 1rem;
+    }
+    
+    .file-drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .file-drop-zone:hover, .file-drop-zone.is-active {
+        background-color: #efffef;
+        border-color: #48c774;
+    }
+    
+    .file-drop-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+    }
+    
+    .file-drop-content .icon {
+        color: #3273dc;
+    }
+    
+    .file-name-display {
+        font-weight: 500;
+        color: #363636;
+    }
+    
+    .file-name-display.has-file {
+        color: #3273dc;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .chart-container {
+            margin-top: 2rem;
+        }
+        
+        .table-container {
+            max-height: 400px;
+        }
+    }
+    
+    /* Loading animation styles */
+    .loading-container {
+        margin: 1rem auto;
+    }
+    .lds-ring {
+        display: inline-block;
+        position: relative;
+        width: 40px;
+        height: 40px;
+    }
+    .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        margin: 4px;
+        border: 4px solid var(--primary-color);
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: var(--primary-color) transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching
+    const tabs = document.querySelectorAll('.tabs li');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const activeTabInput = document.getElementById('active_tab');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove all active states
+            tabs.forEach(t => t.classList.remove('is-active'));
+            tabContents.forEach(content => content.classList.add('is-hidden'));
+            
+            // Add new active state
+            tab.classList.add('is-active');
+            const targetId = tab.id.replace('tab-', 'content-');
+            document.getElementById(targetId).classList.remove('is-hidden');
+            
+            // 更新隐藏字段的值，存储当前活动选项卡
+            activeTabInput.value = tab.id.replace('tab-', '');
+        });
+    });
+    
+    // Simplified file upload handling
+    const fileInput = document.getElementById('url-file-input');
+    const fileNameDisplay = document.getElementById('file-name-display');
+    const dropZone = document.getElementById('drop-zone');
+    
+    if (fileInput && dropZone) {
+        // Click entire area to trigger file selection
+        dropZone.addEventListener('click', function(e) {
+            // If click is not on file input itself, manually trigger click
+            if (e.target !== fileInput && !e.target.closest('.file-label')) {
+                fileInput.click();
+            }
+        });
+        
+        // Update display when file selection changes
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = fileInput.files[0].name;
+                fileNameDisplay.classList.add('has-file');
+            } else {
+                fileNameDisplay.textContent = 'No file selected';
+                fileNameDisplay.classList.remove('has-file');
+            }
+        });
+        
+        // Drag and drop file handling
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropZone.classList.add('is-active');
+        }
+        
+        function unhighlight() {
+            dropZone.classList.remove('is-active');
+        }
+        
+        dropZone.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                fileInput.files = files;
+                fileNameDisplay.textContent = files[0].name;
+                fileNameDisplay.classList.add('has-file');
+                
+                // Trigger change event
+                const event = new Event('change', { bubbles: true });
+                fileInput.dispatchEvent(event);
+            }
+        }
+    }
+    
+    // Form submission loading animation
+    const urlCheckForm = document.getElementById('urlCheckForm');
+    const submitButton = document.getElementById('submitButton');
+    const loadingAnimation = document.getElementById('loadingAnimation');
+    
+    if (urlCheckForm) {
+        urlCheckForm.addEventListener('submit', function(e) {
+            // Display loading animation
+            submitButton.classList.add('is-hidden');
+            loadingAnimation.classList.remove('is-hidden');
+        });
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const resultsTable = document.getElementById('resultsTable');
+    
+    if (searchInput && resultsTable) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = resultsTable.querySelectorAll('tr.result-row');
+            
+            rows.forEach(row => {
+                const url = row.querySelector('.url-text').textContent.toLowerCase();
+                if (url.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+    
+    // URL copy functionality
+    const copyButtons = document.querySelectorAll('.copy-url');
+    
+    copyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+            navigator.clipboard.writeText(url).then(() => {
+                // Show copy success notification
+                this.classList.remove('is-info');
+                this.classList.add('is-success');
+                
+                // Restore after 2 seconds
+                setTimeout(() => {
+                    this.classList.remove('is-success');
+                    this.classList.add('is-info');
+                }, 2000);
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block scripts %}
+{% if prediction %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('resultChart').getContext('2d');
+        
+        // Calculate data
+        const confidenceValue = parseFloat('{{ confidence }}');
+        const inverseConfidence = 1 - confidenceValue;
+        
+        // Set colors based on prediction result
+        const primaryColor = '{% if "phishing" in prediction %}#f72585{% else %}#4cc9f0{% endif %}';
+        const secondaryColor = '#e9ecef';
+        
+        // Create chart
+        const resultChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['{{ prediction }}', 'Uncertainty'],
+                datasets: [{
+                    data: [confidenceValue * 100, inverseConfidence * 100],
+                    backgroundColor: [primaryColor, secondaryColor],
+                    borderColor: ['transparent', 'transparent'],
+                    borderWidth: 0,
+                    hoverOffset: 4,
+                    borderRadius: 5,
+                    spacing: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            boxWidth: 12,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed.toFixed(2) + '%';
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 1000,
+                    easing: 'easeOutCubic'
+                }
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

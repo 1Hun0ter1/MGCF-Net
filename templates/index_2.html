@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing URL Detection</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .input-field, select {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus, select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .submit-btn {
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .result strong {
+            color: #333;
+        }
+
+        .confidence {
+            font-size: 16px;
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Phishing URL Detection1</div>
+        <form action="/predict" method="POST">
+            <input type="text" name="url" class="input-field" placeholder="Enter URL..." required>
+            <select name="model" required>
+                {% for model in models %}
+                    <option value="{{ model }}" {% if model == model_name %}selected{% endif %}>{{ model }}</option>
+                {% endfor %}
+            </select>            
+            <br>
+            <button type="submit" class="submit-btn">Check</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result">
+            <p>Model used: <strong>{{ model_name }}</strong></p>
+            <p>URL: <strong>{{ url }}</strong></p>  
+            <p>The URL is classified as: <strong>{{ prediction }}</strong></p>
+            <p class="confidence">Confidence: {{ confidence }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
