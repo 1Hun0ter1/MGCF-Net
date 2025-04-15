@@ -4,7 +4,7 @@
 
 ---
 
-A complete and modular system for **phishing detection**, combining traditional machine learning, deep learning (CNN-based), and handcrafted URL feature engineering. This project is part of a **Secure Cyber Systems** coursework.
+A complete and modular system for **phishing detection**, combining traditional machine learning, deep learning, and handcrafted URL feature engineering. This project is part of a **Secure Cyber Systems** coursework.
 
 ---
 
@@ -158,7 +158,13 @@ You can download the **balanced phishing/legitimate URL dataset** collected from
 
 ## 🧾 Citation
 
-*Coming soon*
+```
+@program{SSS-CW2025Huang,
+  title={Multi-Granular Context Fusion Network},
+  author={Hao Huang, Chuyu Zhao, Mingshu Tan, Zhuyi Li, Tianshu Wen, Zijie Chen, Yu Meng, Yitong Zhou}
+  year={2025}
+}
+```
 
 ## 🙏 Acknowledgments
 
