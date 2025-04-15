@@ -160,7 +160,7 @@ You can download the **balanced phishing/legitimate URL dataset** collected from
 
 ```
 @program{SSS-CW2025Huang,
-  title={Multi-Granular Context Fusion Network},
+  title={Multi-Granular Context Fusion Network for Phishing URLs Detection},
   author={Hao Huang, Chuyu Zhao, Mingshu Tan, Zhuyi Li, Tianshu Wen, Zijie Chen, Yu Meng, Yitong Zhou}
   year={2025}
 }
