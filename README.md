@@ -1,6 +1,6 @@
 # 🔐 Secure Cyber Systems — Phishing Detection Framework
 
-![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue) ![License](https://img.shields.io/github/license/1Hun0ter1/satefy_cw_project) ![Last Commit](https://img.shields.io/github/last-commit/1Hun0ter1/satefy_cw_project) ![Stars](https://img.shields.io/github/stars/1Hun0ter1/satefy_cw_project?style=social) ![Issues](https://img.shields.io/github/issues/1Hun0ter1/satefy_cw_project) ![Forks](https://img.shields.io/github/forks/1Hun0ter1/satefy_cw_project)
+![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue) ![License](https://img.shields.io/github/license/1Hun0ter1/MGCF-Net) ![Last Commit](https://img.shields.io/github/last-commit/1Hun0ter1/MGCF-Net) ![Stars](https://img.shields.io/github/stars/1Hun0ter1/MGCF-Net?style=social) ![Issues](https://img.shields.io/github/issues/1Hun0ter1/MGCF-Net) ![Forks](https://img.shields.io/github/forks/1Hun0ter1/MGCF-Net)
 
 ---
 
