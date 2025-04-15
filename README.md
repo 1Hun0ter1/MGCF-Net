@@ -11,7 +11,7 @@ A complete and modular system for **phishing detection**, combining traditional 
 ## 📂 Project Structure
 
 ```bash
-satefy_cw_project/
+MGCF-Net/
 │
 ├── dataset/               # Balanced dataset (phishing & legitimate URLs)
 ├── src/                   # Main codebase
@@ -29,8 +29,8 @@ satefy_cw_project/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/1Hun0ter1/satefy_cw_project.git
-cd satefy_cw_project
+git clone https://github.com/1Hun0ter1/MGCF-Net.git
+cd MGCF-Net
 ```
 
 ### 2. Set up environment
