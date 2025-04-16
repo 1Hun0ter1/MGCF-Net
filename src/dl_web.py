@@ -3,12 +3,24 @@ import json
 import argparse
 import numpy as np
 from flask import Flask, request, jsonify, render_template, current_app
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+try:
+    from tensorflow.keras.models import load_model
+    from tensorflow.keras.preprocessing.text import Tokenizer
+    from tensorflow.keras.preprocessing.sequence import pad_sequences
+    TENSORFLOW_AVAILABLE = True
+except ImportError:
+    TENSORFLOW_AVAILABLE = False
+    print("TensorFlow not available, running in demo mode")
+
 from sklearn.preprocessing import LabelEncoder
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+try:
+    from sklearn.preprocessing import StandardScaler
+    SKLEARN_AVAILABLE = True
+except ImportError:
+    SKLEARN_AVAILABLE = False
+    print("scikit-learn StandardScaler not available, running in limited mode")
+
 from urllib.parse import urlparse
 import re
 
@@ -18,6 +30,7 @@ app = Flask(__name__)
 # Argument parser to take HTML file as an argument
 parser = argparse.ArgumentParser(description='Phishing URL Detection')
 parser.add_argument('--html', type=str, default='index_3.html', help='HTML template file to use for the frontend')
+parser.add_argument('--demo', action='store_true', help='Run in demo mode without models')
 args = parser.parse_args()
 
 class PhishingUrlTest:
@@ -38,7 +51,10 @@ class PhishingUrlTest:
         features = []
 
         # 将 CSV 转为字典，提升查找效率
-        pagerank_dict = pagerank_df.set_index('domain').to_dict(orient='index')
+        if pagerank_df is not None:
+            pagerank_dict = pagerank_df.set_index('domain').to_dict(orient='index')
+        else:
+            pagerank_dict = {}
 
         for url in urls:
             parsed = urlparse(url)
@@ -95,13 +111,20 @@ class PhishingUrlTest:
     
     def load_model(self):
         # Dynamically load the model if a model path is provided
-        if self.model_path:
-            self.model = load_model(self.model_path)
-            current_app.logger.debug("Model loaded from %s", self.model_path)
+        if self.model_path and TENSORFLOW_AVAILABLE:
+            try:
+                self.model = load_model(self.model_path)
+                current_app.logger.debug("Model loaded from %s", self.model_path)
+            except Exception as e:
+                current_app.logger.error(f"Error loading model: {e}")
+                self.model = None
         else:
-            current_app.logger.debug("No model path provided.")
+            current_app.logger.debug("No model path provided or TensorFlow not available.")
 
     def prepare_data(self, url):
+        if not TENSORFLOW_AVAILABLE:
+            return None
+            
         # Tokenizer for text vectorization
         self.tokenizer = Tokenizer(lower=True, char_level=True, oov_token='-n-')
         
@@ -116,34 +139,61 @@ class PhishingUrlTest:
         x_test = np.array(x_test).astype('float32')
 
         pagerank_path = './dataset/top100k_cc.csv'
-        pagerank_df = pd.read_csv(pagerank_path)
+        try:
+            pagerank_df = pd.read_csv(pagerank_path)
+        except Exception as e:
+            current_app.logger.error(f"Error loading PageRank data: {e}")
+            pagerank_df = None
 
         pagerank_features = self.extract_domain_features(raw_x_test, pagerank_df)
 
         manual_features = np.hstack((self.extract_manual_features(raw_x_test), pagerank_features))
 
-        scaler = StandardScaler()
-        manual_features = scaler.fit_transform(manual_features)
+        if SKLEARN_AVAILABLE:
+            scaler = StandardScaler()
+            manual_features = scaler.fit_transform(manual_features)
  
         x_test = np.hstack((x_test, manual_features))
 
         return x_test
 
     def classify_url(self, url):
+        if args.demo or not TENSORFLOW_AVAILABLE or self.model is None:
+            # In demo mode, provide a simple heuristic-based classification
+            suspicious_terms = ['login', 'signin', 'account', 'secure', 'bank', 'update', 'verify']
+            special_chars = re.findall(r'[-@./&]', url)
+            is_suspicious = any(term in url.lower() for term in suspicious_terms) and len(special_chars) > 5
+            
+            if is_suspicious:
+                label = 'phishing (demo)'
+                confidence = 0.75  # Dummy confidence
+            else:
+                label = 'legitimate (demo)'
+                confidence = 0.65  # Dummy confidence
+                
+            return label, confidence
+    
         # Prepare data
         x_test = self.prepare_data(url)
+        if x_test is None:
+            return "Could not process URL", 0.0
+            
         current_app.logger.debug("Test data: %s", x_test)
         # Predict the category
-        prediction = self.model.predict([x_test[:, :self.sequence_length], x_test[:, self.sequence_length:]])
-        current_app.logger.debug("Model prediction: %s", prediction)
-        
-        prediction_class = np.argmax(prediction, axis=1)
-        
-        # Assuming '1' is phishing and '0' is legitimate
-        label = 'phishing' if prediction_class == 1 else 'legitimate'
-        confidence = np.max(prediction)  # Get the maximum confidence score
-        
-        current_app.logger.debug("Classified as: %s with confidence: %f", label, confidence)
+        try:
+            prediction = self.model.predict([x_test[:, :self.sequence_length], x_test[:, self.sequence_length:]])
+            current_app.logger.debug("Model prediction: %s", prediction)
+            
+            prediction_class = np.argmax(prediction, axis=1)
+            
+            # Assuming '1' is phishing and '0' is legitimate
+            label = 'phishing' if prediction_class == 1 else 'legitimate'
+            confidence = np.max(prediction)  # Get the maximum confidence score
+            
+            current_app.logger.debug("Classified as: %s with confidence: %f", label, confidence)
+        except Exception as e:
+            current_app.logger.error(f"Error during prediction: {e}")
+            return "Error during prediction", 0.0
         
         return label, confidence
 
@@ -153,18 +203,25 @@ model_paths = {
     "MGCF_Net_cl_enhanced": ".test_results/custom/balanced_dataset_new/char-level/MGCF_Net_1000bs_20e_0.001wd_50000nw_True_enhanced/20250405_031220/model_all.keras",
     "MGCF_Net_wl": "./test_results/custom/balanced_dataset_new/word-level/MGCF_Net_1000bs_20e_0.001wd_50000nw_False_enhanced/20250405_031228/model_all.keras",
     "MGCF_Net_wl_enhanced": "./test_results/custom/balanced_dataset_new/word-level/MGCF_Net_1000bs_20e_0.001wd_50000nw_True_enhanced/20250405_031236/model_all.keras",
-    "cnn_base": "./test_results/custom/balanced_dataset_new/char-level/cnn_base_1000bs_20e_0.001wd_50000nw_False_enhanced/20250405_033756/model_all.keras"
+    "cnn_base": "./test_results/custom/balanced_dataset_new/char-level/cnn_base_1000bs_20e_0.001wd_50000nw_False_enhanced/20250405_033756/model_all.keras",
+    "demo_mode": "DEMO MODE - No model needed"
 }
 @app.route('/')
 def home():
     # Render the index page with available model options
-    
-    return render_template(args.html, models=model_paths.keys())
+    available_models = ["demo_mode"] if args.demo else model_paths.keys()
+    return render_template(args.html, models=available_models)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     url = request.form['url']
     model_name = request.form['model']
+    
+    # Demo mode or actual model
+    if model_name == "demo_mode" or args.demo:
+        phishing_url_test = PhishingUrlTest()
+        result, confidence = phishing_url_test.classify_url(url)
+        return render_template(args.html, prediction=result, confidence=confidence, url=url, model_name="Demo Mode", models=["demo_mode"])
     
     # Get model path from the model name
     model_path = model_paths.get(model_name, None)

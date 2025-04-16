@@ -1,0 +1,1057 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero is-primary is-bold is-large">
+    <div class="hero-body" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), #3273DC center center; background-size: cover;">
+        <div class="container">
+            <div class="columns is-vcentered">
+                <div class="column is-7">
+                    <h1 class="title is-1 has-text-white animate__animated animate__fadeInUp">
+                        Protect Your Online Security
+                    </h1>
+                    <h2 class="subtitle is-3 has-text-white animate__animated animate__fadeInUp animate__delay-1s">
+                        Deep Learning-Based Phishing URL Intelligent Detection System
+                    </h2>
+                    <p class="is-size-5 has-text-white animate__animated animate__fadeInUp animate__delay-2s mt-4">
+                        We utilize advanced artificial intelligence technology to provide high-precision phishing website detection services, protecting your personal information security.
+                    </p>
+                    <div class="buttons mt-5 animate__animated animate__fadeInUp animate__delay-3s">
+                        <a href="{{ url_for('index') }}" class="button is-white is-large">
+                            <span class="icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </span>
+                            <span>Detect Now</span>
+                        </a>
+                        <a href="#features" class="button is-white is-outlined is-large">
+                            <span>Learn More</span>
+                            <span class="icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </a>
+                        <a href="#team" class="button is-white is-outlined is-large">
+                            <span>Meet Our Team</span>
+                            <span class="icon">
+                                <i class="fas fa-users"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="column is-5 has-text-centered is-hidden-mobile">
+                    <span class="icon is-large has-text-white">
+                        <i class="fas fa-shield-alt fa-10x"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section" id="features">
+    <div class="container">
+        <h2 class="title is-2 has-text-centered mb-6">
+            <span class="icon-text">
+                <span class="icon has-text-primary">
+                    <i class="fas fa-star"></i>
+                </span>
+                <span>System Features</span>
+            </span>
+        </h2>
+        
+        <div class="columns is-multiline">
+            <div class="column is-4">
+                <div class="card feature-card h-100">
+                    <div class="card-content">
+                        <div class="has-text-centered mb-4">
+                            <span class="icon is-large">
+                                <i class="fas fa-check-circle fa-3x has-text-primary"></i>
+                            </span>
+                            <h3 class="title is-4 mt-3">High Accuracy</h3>
+                            <h4 class="subtitle is-6">99.5% Detection Precision</h4>
+                        </div>
+                        <div class="content">
+                            Our detection model is trained on data from millions of websites, capable of precisely identifying various phishing website features, with a detection accuracy of up to 99.5%, far surpassing traditional rule-based detection methods.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column is-4">
+                <div class="card feature-card h-100">
+                    <div class="card-content">
+                        <div class="has-text-centered mb-4">
+                            <span class="icon is-large">
+                                <i class="fas fa-bolt fa-3x has-text-primary"></i>
+                            </span>
+                            <h3 class="title is-4 mt-3">Real-time Detection</h3>
+                            <h4 class="subtitle is-6">Millisecond-level Response</h4>
+                        </div>
+                        <div class="content">
+                            Based on an optimized neural network architecture, our system can complete URL feature extraction and risk assessment within milliseconds, providing immediate security protection.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column is-4">
+                <div class="card feature-card h-100">
+                    <div class="card-content">
+                        <div class="has-text-centered mb-4">
+                            <span class="icon is-large">
+                                <i class="fas fa-layer-group fa-3x has-text-primary"></i>
+                            </span>
+                            <h3 class="title is-4 mt-3">Batch Detection</h3>
+                            <h4 class="subtitle is-6">Supports Multi-URL Analysis</h4>
+                        </div>
+                        <div class="content">
+                            The system supports batch URL detection and file import functionality. Enterprise users can check hundreds or thousands of URLs simultaneously, improving efficiency and suitable for large-scale security audits.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="section has-background-light" id="statistics">
+    <div class="container">
+        <h2 class="title is-2 has-text-centered mb-6">
+            <span class="icon-text">
+                <span class="icon has-text-primary">
+                    <i class="fas fa-chart-bar"></i>
+                </span>
+                <span>System Statistics</span>
+            </span>
+        </h2>
+        
+        <div class="columns is-multiline">
+            <div class="column is-3">
+                <div class="stat-box has-text-centered">
+                    <span class="icon is-large">
+                        <i class="fas fa-search fa-3x has-text-primary"></i>
+                    </span>
+                    <div class="stat-count">1,500,000+</div>
+                    <div class="stat-label">URLs Scanned</div>
+                </div>
+            </div>
+            
+            <div class="column is-3">
+                <div class="stat-box has-text-centered">
+                    <span class="icon is-large">
+                        <i class="fas fa-shield-alt fa-3x has-text-primary"></i>
+                    </span>
+                    <div class="stat-count">98.7%</div>
+                    <div class="stat-label">Detection Accuracy</div>
+                </div>
+            </div>
+            
+            <div class="column is-3">
+                <div class="stat-box has-text-centered">
+                    <span class="icon is-large">
+                        <i class="fas fa-bug fa-3x has-text-primary"></i>
+                    </span>
+                    <div class="stat-count">250,000+</div>
+                    <div class="stat-label">Phishing Sites Identified</div>
+                </div>
+            </div>
+            
+            <div class="column is-3">
+                <div class="stat-box has-text-centered">
+                    <span class="icon is-large">
+                        <i class="fas fa-users fa-3x has-text-primary"></i>
+                    </span>
+                    <div class="stat-count">10,000+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="columns mt-6">
+            <div class="column is-6">
+                <div class="card chart-card">
+                    <div class="card-content">
+                        <h3 class="title is-4 has-text-centered">Phishing Website Type Distribution</h3>
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="phishingTypeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column is-6">
+                <div class="card chart-card">
+                    <div class="card-content">
+                        <h3 class="title is-4 has-text-centered">Monthly Detection Trend</h3>
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="detectionTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technology Implementation Section -->
+<section class="section" id="technology">
+    <div class="container">
+        <h2 class="title is-2 has-text-centered mb-6">
+            <span class="icon-text">
+                <span class="icon has-text-primary">
+                    <i class="fas fa-microchip"></i>
+                </span>
+                <span>Technology Implementation</span>
+            </span>
+        </h2>
+        
+        <!-- System Design Section -->
+        <div class="card mb-6">
+            <div class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2">
+                        <i class="fas fa-sitemap"></i>
+                    </span>
+                    2.1 System Design
+                </p>
+            </div>
+            <div class="card-content">
+                <div class="content">
+                    <div class="columns is-vcentered">
+                        <div class="column is-5">
+                            <figure class="image">
+                                <img src="{{ url_for('static', filename='img/1744703865196.jpg') }}" alt="System Design Architecture Diagram">
+                            </figure>
+                        </div>
+                        <div class="column is-7">
+                            <p class="mb-4">Our system utilizes a multi-stage processing workflow to detect phishing URLs through feature extraction and deep learning models. The system primarily includes the following components:</p>
+                    
+                            <div class="notification is-light is-primary">
+                                <h4 class="title is-5 mb-2">Feature Extraction Module</h4>
+                                <div class="columns">
+                                    <div class="column is-4">
+                                        <div class="box">
+                                            <h5 class="subtitle is-6 has-text-weight-bold">Manual Features</h5>
+                                            <ul>
+                                                <li>URL Length</li>
+                                                <li>Special Character Count</li>
+                                                <li>Numeric Ratio</li>
+                                                <li>Sensitive Word Detection</li>
+                                                <li>Domain Length</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="column is-4">
+                                        <div class="box">
+                                            <h5 class="subtitle is-6 has-text-weight-bold">Automatic Features</h5>
+                                            <ul>
+                                                <li>Branch 1: Character-level Features</li>
+                                                <li>Branch 2: Word-level Features</li>
+                                                <li>Branch 3: N-grams Analysis</li>
+                                                <li>Branch 4: TF-IDF Vectorization</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="column is-4">
+                                        <div class="box">
+                                            <h5 class="subtitle is-6 has-text-weight-bold">Domain Features</h5>
+                                            <ul>
+                                                <li>pr_pos: Position Feature</li>
+                                                <li>pr_val: Value Feature</li>
+                                                <li>harmonic_pos: Harmonic Position</li>
+                                                <li>harmonic_val: Harmonic Value</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification is-light mt-4">
+                        <h4 class="title is-5 mb-2">Detection Process</h4>
+                        <ol>
+                            <li>Data Input → Retrieve URL samples from URLhaus and Common CRAWL</li>
+                            <li>Similarity Filtering → Ensure Data Set Diversity</li>
+                            <li>Feature Extraction → Generate Multi-dimensional Feature Vectors</li>
+                            <li>Model Prediction → Use MGCF-Net Deep Learning Model</li>
+                            <li>Output Classification → Phishing URL/Legal URL</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Data Set Construction Section -->
+        <div class="card mb-6">
+            <div class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2">
+                        <i class="fas fa-database"></i>
+                    </span>
+                    2.3 Data Set Construction
+                </p>
+            </div>
+            <div class="card-content">
+                <div class="content">
+                    <div class="columns is-vcentered">
+                        <div class="column is-7">
+                            <p>Our data set comes from URLhaus and Common CRAWL, and the construction process is as follows:</p>
+                    
+                            <div class="table-container">
+                                <table class="table is-fullwidth">
+                                    <thead>
+                                        <tr>
+                                            <th>Data Source</th>
+                                            <th>Sample Quantity</th>
+                                            <th>Processing Method</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>URLhaus (Phishing URLs)</td>
+                                            <td>368,319 Samples</td>
+                                            <td>50% Data Set Composition</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Common CRAWL (Legal URLs)</td>
+                                            <td>About 370,000 Samples</td>
+                                            <td>50% Data Set Composition</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Similarity Filtering</td>
+                                            <td>About 200,000 Samples</td>
+                                            <td>Used for Model Training</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Adversarial Sample Generation</td>
+                                            <td>About 32,000 Samples</td>
+                                            <td>Enhance Model Robustness</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="column is-5">
+                            <figure class="image">
+                                <img src="{{ url_for('static', filename='img/1744703876180.jpg') }}" alt="Data Set Construction Flow Diagram">
+                            </figure>
+                        </div>
+                    </div>
+                    
+                    <div class="notification is-light is-warning mt-4">
+                        <h4 class="title is-5 mb-2">Data Set Division</h4>
+                        <div class="columns">
+                            <div class="column is-4">
+                                <div class="box has-background-primary-light">
+                                    <h5 class="subtitle is-6 has-text-weight-bold has-text-centered">Training Set</h5>
+                                    <p class="has-text-centered is-size-3 has-text-weight-bold">80%</p>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="box has-background-info-light">
+                                    <h5 class="subtitle is-6 has-text-weight-bold has-text-centered">Validation Set</h5>
+                                    <p class="has-text-centered is-size-3 has-text-weight-bold">10%</p>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="box has-background-success-light">
+                                    <h5 class="subtitle is-6 has-text-weight-bold has-text-centered">Test Set</h5>
+                                    <p class="has-text-centered is-size-3 has-text-weight-bold">10%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="title is-5 mt-5">Adversarial Sample Generation</h4>
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="box">
+                                <h5 class="subtitle is-6 has-text-weight-bold">Character Replacement Technique</h5>
+                                <p>Replace characters like "o" with "0", "-" with "_", etc.</p>
+                            </div>
+                        </div>
+                        <div class="column is-6">
+                            <div class="box">
+                                <h5 class="subtitle is-6 has-text-weight-bold">Subdomain Addition</h5>
+                                <p>Add brand as a subdomain to the domain</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="box">
+                                <h5 class="subtitle is-6 has-text-weight-bold">Consecutive Character Replacement</h5>
+                                <p>Replace dots in the domain with consecutive characters</p>
+                            </div>
+                        </div>
+                        <div class="column is-6">
+                            <div class="box">
+                                <h5 class="subtitle is-6 has-text-weight-bold">Deceptive Path</h5>
+                                <p>Add a fake path like "/secure/login/"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Feature Extraction Method -->
+        <div class="card mb-6">
+            <div class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2">
+                        <i class="fas fa-code-branch"></i>
+                    </span>
+                    Feature Extraction Method
+                </p>
+            </div>
+            <div class="card-content">
+                <div class="content">
+                    <div class="columns">
+                        <div class="column is-6">
+                            <h4 class="title is-5">N-grams (n=3) Analysis</h4>
+                            <p>We use trigrams to extract semantic information from URLs:</p>
+                            <div class="box has-background-light">
+                                <code class="has-text-danger">http://www.example.com/login.php?user=admin&action=delete</code>
+                                <div class="mt-2">
+                                    <div class="tags">
+                                        <span class="tag is-info">http</span>
+                                        <span class="tag is-info">www</span>
+                                        <span class="tag is-info">example</span>
+                                        <span class="tag is-info">com</span>
+                                        <span class="tag is-info">login</span>
+                                        <span class="tag is-info">php</span>
+                                        <span class="tag is-warning">user</span>
+                                        <span class="tag is-warning">admin</span>
+                                        <span class="tag is-warning">action</span>
+                                        <span class="tag is-warning">delete</span>
+                                    </div>
+                                </div>
+                                <p class="mt-2">By analyzing each part of the URL: protocol, hostname, path, and parameters, we can capture the structural features of the URL.</p>
+                            </div>
+                            <figure class="image mt-4">
+                                <img src="{{ url_for('static', filename='img/1744703888661.jpg') }}" alt="N-grams Analysis Diagram">
+                            </figure>
+                        </div>
+                        <div class="column is-6">
+                            <h4 class="title is-5">TF-IDF Vectorization</h4>
+                            <p><strong>Term Frequency (TF):</strong></p>
+                            <div class="notification is-light">
+                                <p>Measures the frequency of term t in URL u.</p>
+                                <p>TF(t,u) = <span class="has-text-weight-bold">Number of times term t appears in URL u / Total number of terms in URL u</span></p>
+                            </div>
+                            
+                            <p><strong>Inverse Document Frequency (IDF):</strong></p>
+                            <div class="notification is-light">
+                                <p>Evaluates the rareness of term t in the entire corpus.</p>
+                                <p>IDF(t) = log(<span class="has-text-weight-bold">Total number of URLs in the corpus / (Number of URLs containing term t + 1)</span>)</p>
+                            </div>
+                            
+                            <p><strong>TF-IDF Weight:</strong></p>
+                            <div class="notification is-light">
+                                <p>TF-IDF(t,d) = TF(t,d) × IDF(t)</p>
+                                <p>This weight can highlight key features in the URL while reducing the impact of common terms.</p>
+                            </div>
+                            
+                            <figure class="image mt-4">
+                                <img src="{{ url_for('static', filename='img/1744703900936.jpg') }}" alt="TF-IDF Vectorization Process">
+                            </figure>
+                        </div>
+                    </div>
+                    
+                    <h4 class="title is-5 mt-5">Neural Network Model</h4>
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="box">
+                                <h5 class="subtitle is-6 has-text-weight-bold">MGCF-Net</h5>
+                                <ul>
+                                    <li>Use Word Embedding to Capture Semantic Information</li>
+                                    <li>CNN Extracts Local Context Features</li>
+                                    <li>BiLSTM Captures Global Sequence Information</li>
+                                    <li>Semantic Fusion Layer Integrates Features</li>
+                                    <li>Cross Attention Mechanism Enhances Feature Representation</li>
+                                    <li>Integrate Manual Features and Domain Knowledge</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="column is-6">
+                            <div class="box">
+                                <h5 class="subtitle is-6 has-text-weight-bold">DeepCNN_Light_Hybrid</h5>
+                                <ul>
+                                    <li>Lightweight Architecture, Suitable for Low Resource Environments</li>
+                                    <li>Deep CNN Extracts Semantic Representation</li>
+                                    <li>Combine Manual Features to Enhance Performance</li>
+                                    <li>Domain Name Reputation Assessment</li>
+                                    <li>Efficient Feature Concatenation Strategy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section has-background-primary-light" id="team">
+    <div class="container">
+        <h2 class="title is-2 has-text-centered mb-6">
+            <span class="icon-text">
+                <span class="icon has-text-primary">
+                    <i class="fas fa-users"></i>
+                </span>
+                <span>Our Development Team</span>
+            </span>
+        </h2>
+        
+        <p class="subtitle has-text-centered mb-6">
+            Meet the talented professionals behind this phishing detection system
+        </p>
+        
+        <div class="columns is-multiline">
+            <!-- Team Member 1 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/hh.png') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Huang Hao</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Leading the Project</h4>
+                        <div class="content mt-3">
+                            <p>Oversees the entire project, coordinates the team, and ensures the project's goals are achieved through efficient collaboration and planning.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">Leadership</span>
+                                <span class="tag is-primary is-light">Strategy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/czj.jpg') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Chen Zijie</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Designing the Web Interface</h4>
+                        <div class="content mt-3">
+                            <p>Creates and designs the web interface, ensuring the user experience is intuitive, engaging, and aligned with project goals.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">UI/UX Design</span>
+                                <span class="tag is-primary is-light">Web Development</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/zcy.png') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Zhao Chuyu</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Analyzing the Data</h4>
+                        <div class="content mt-3">
+                            <p>Focuses on analyzing data to extract meaningful insights, helping guide decisions that drive the project forward.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">Data Analysis</span>
+                                <span class="tag is-primary is-light">Data Insights</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/tms.png') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Tan Mingshu</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Managing Version Control</h4>
+                        <div class="content mt-3">
+                            <p>Handles version control and ensures smooth integration of the team’s work, maintaining a seamless development workflow.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">Version Control</span>
+                                <span class="tag is-primary is-light">Git Management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 5 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/lzy.png') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Li Zhuyi</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Extracting Key Features</h4>
+                        <div class="content mt-3">
+                            <p>Focuses on identifying and extracting essential features from raw data to enhance model performance.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">Feature Engineering</span>
+                                <span class="tag is-primary is-light">Data Processing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 6 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/wts.png') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Wen Tianshu</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Collecting Valuable Sources</h4>
+                        <div class="content mt-3">
+                            <p>Gathering and curating the datasets needed for the project, ensuring a high quality and diverse data foundation.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">Data Collection</span>
+                                <span class="tag is-primary is-light">Source Management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 7 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/my.jpg') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Mengyu</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Drawing Illustrations</h4>
+                        <div class="content mt-3">
+                            <p>Creates visual illustrations, charts, and diagrams to represent data and models in an easily digestible format.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">Illustration</span>
+                                <span class="tag is-primary is-light">Data Visualization</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 8 -->
+            <div class="column is-6">
+                <div class="card h-100 team-card">
+                    <div class="card-content has-text-centered">
+                        <div class="avatar mb-4">
+                            <figure class="image is-128x128 is-inline-block">
+                                <img class="is-rounded" src="{{ url_for('static', filename='img/zyt.png') }}" alt="Team member">
+                            </figure>
+                        </div>
+                        <h3 class="title is-4">Zhou Yitong</h3>
+                        <h4 class="subtitle is-6 has-text-primary">Creating Artistic Designs</h4>
+                        <div class="content mt-3">
+                            <p>Designs creative and artistic visuals to enhance the project's aesthetic appeal and visual communication.</p>
+                            <div class="tags are-medium is-centered mt-3">
+                                <span class="tag is-primary is-light">Art</span>
+                                <span class="tag is-primary is-light">Creative Design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ 
+
+<style>
+    /* Add Some Additional Custom Styles */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        padding-top: 0;  /* Remove Top Padding Because base.html Already Provides Navigation Bar */
+    }
+    
+    .h-100 {
+        height: 100%;
+    }
+    
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
+    }
+    
+    .stat-box {
+        padding: 2rem;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .stat-box:hover {
+        transform: translateY(-5px);
+    }
+    
+    .stat-count {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #3273dc;
+        margin: 1rem 0;
+    }
+    
+    .stat-label {
+        font-size: 1.2rem;
+        color: #4a4a4a;
+    }
+    
+    .footer-links {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .footer-links li {
+        margin-bottom: 0.75rem;
+    }
+    
+    .icon-link {
+        margin-right: 1rem;
+        font-size: 1.5rem;
+    }
+    
+    /* Chart Style Optimization */
+    .chart-card {
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .chart-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .chart-container {
+        position: relative;
+        margin: 0 auto;
+        width: 100%;
+        margin-top: 1rem;
+        transition: all 0.5s ease;
+    }
+    
+    /* Loading Animation */
+    .chart-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+    
+    .chart-loading .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3273dc;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    @media screen and (max-width: 768px) {
+        .stat-box {
+            margin-bottom: 1rem;
+        }
+        
+        .chart-container {
+            height: 300px !important;
+        }
+    }
+    
+    /* Team Section Styles */
+    .team-card {
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .team-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .avatar img {
+        border: 5px solid #f5f5f5;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .has-background-primary-light {
+        background-color: #ebf8ff !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Chart Configuration and Animation
+    const addLoadingEffect = (chartId) => {
+        const container = document.querySelector(`#${chartId}`).parentNode;
+        const loading = document.createElement('div');
+        loading.className = 'chart-loading animate__animated animate__fadeIn';
+        loading.innerHTML = '<div class="loader"></div>';
+        container.appendChild(loading);
+        
+        return loading;
+    };
+    
+    const removeLoadingEffect = (loading) => {
+        loading.classList.add('animate__fadeOut');
+        setTimeout(() => {
+            loading.remove();
+        }, 500);
+    };
+    
+    // Phishing Website Type Distribution Chart
+    if (document.getElementById('phishingTypeChart')) {
+        const loading = addLoadingEffect('phishingTypeChart');
+        
+        setTimeout(() => {
+            const phishingTypeCtx = document.getElementById('phishingTypeChart').getContext('2d');
+            const phishingTypeChart = new Chart(phishingTypeCtx, {
+                type: 'doughnut', // Doughnut Chart is More Modern Than Pie Chart
+                data: {
+                    labels: ['Financial Phishing', 'Social Media Phishing', 'E-commerce Phishing', 'Payment Service Phishing', 'Other Phishing'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: [
+                            '#4361ee',
+                            '#3ec1d3',
+                            '#f9c846',
+                            '#f72585',
+                            '#7209b7'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 20,
+                        borderRadius: 5,
+                        spacing: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeOutCubic'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((acc, data) => acc + data, 0);
+                                    const percentage = Math.round(value / total * 100) + '%';
+                                    return `${context.label}: ${percentage}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            removeLoadingEffect(loading);
+        }, 1000); // 1 Second to Display Chart, Simulating Loading Process
+    }
+    
+    // Monthly Detection Trend Chart
+    if (document.getElementById('detectionTrendChart')) {
+        const loading = addLoadingEffect('detectionTrendChart');
+        
+        setTimeout(() => {
+            const detectionTrendCtx = document.getElementById('detectionTrendChart').getContext('2d');
+            const gradient1 = detectionTrendCtx.createLinearGradient(0, 0, 0, 400);
+            gradient1.addColorStop(0, 'rgba(67, 97, 238, 0.6)');
+            gradient1.addColorStop(1, 'rgba(67, 97, 238, 0.1)');
+            
+            const gradient2 = detectionTrendCtx.createLinearGradient(0, 0, 0, 400);
+            gradient2.addColorStop(0, 'rgba(247, 37, 133, 0.6)');
+            gradient2.addColorStop(1, 'rgba(247, 37, 133, 0.1)');
+            
+            const detectionTrendChart = new Chart(detectionTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                    datasets: [{
+                        label: 'Total Detection',
+                        data: [12500, 14000, 18500, 22000, 27500, 32000],
+                        backgroundColor: gradient1,
+                        borderColor: '#4361ee',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#4361ee',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }, {
+                        label: 'Phishing Sites Identified',
+                        data: [3800, 4200, 5500, 6800, 8200, 9600],
+                        backgroundColor: gradient2,
+                        borderColor: '#f72585',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#f72585',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart',
+                        delay: (context) => {
+                            return context.dataIndex * 100;
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000) {
+                                        return value / 1000 + 'k';
+                                    }
+                                    return value;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 16
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: true
+                        }
+                    }
+                }
+            });
+            
+            removeLoadingEffect(loading);
+        }, 1500); // 1.5 Seconds to Display Chart, Simulating Loading Process
+    }
+    
+    // Scroll to Chart Area to Trigger Additional Animation Effects
+    const animateOnScroll = () => {
+        const charts = document.querySelectorAll('.chart-card');
+        charts.forEach(chart => {
+            const chartPosition = chart.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.2;
+            
+            if (chartPosition < screenPosition) {
+                chart.classList.add('animate__animated', 'animate__fadeInUp');
+            }
+        });
+    };
+    
+    window.addEventListener('scroll', animateOnScroll);
+});
+</script>
+{% endblock %} 

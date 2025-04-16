@@ -18,7 +18,7 @@ MGCF-Net/
 │   ├── dl.py              # Main script (implement for the architectures)
 │   ├── ml.py              # Traditional ML models (SVM, RF, NB)
 │   ├── dl_test.py         # Run pretrained model on test set
-│   ├── dl_web.py          # running for web
+│   ├── dl_run.py          # running for web
 │   └── ...                # Supporting modules
 ├── requirements.txt       # Python dependencies
 └── README.md              # Project overview
@@ -96,10 +96,10 @@ CUDA_VISIBLE_DEVICES=0 python ml.py -model "SVM"
 ```bash
 cd src
 
-python dl_web.py --html index_3.html
+python dl_run.py  
 ```
 
-This launches a simple URL-checking web page with your trained model in the backend.
+This launches a simple/branch/file-uploaded URL-checking web page with your trained model in the backend.
 
 ### d. 🧪 Quick Test Using Saved Model
 

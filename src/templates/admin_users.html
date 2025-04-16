@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="columns">
+    <div class="column is-12">
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2"><i class="fas fa-users-cog"></i></span>
+                    User Management
+                </p>
+            </header>
+            <div class="card-content">
+                <form method="post" action="{{ url_for('admin_users') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            {{ form.search(class="input", placeholder="Search by username or email") }}
+                        </div>
+                        <div class="control">
+                            {{ form.submit(class="button is-info") }}
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="table-container mt-4">
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Registration Time</th>
+                                <th>Last Login</th>
+                                <th>Admin</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    {% if user.last_login %}
+                                    {{ user.last_login.strftime('%Y-%m-%d %H:%M') }}
+                                    {% else %}
+                                    --
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.is_admin %}
+                                    <span class="tag is-success">Yes</span>
+                                    {% else %}
+                                    <span class="tag is-light">No</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="buttons are-small">
+                                        <a href="{{ url_for('admin_edit_user', id=user.id) }}" class="button is-info">
+                                            <span class="icon"><i class="fas fa-edit"></i></span>
+                                            <span>Edit</span>
+                                        </a>
+                                        {% if user.id != current_user.id %}
+                                        <button class="button is-danger delete-user" data-id="{{ user.id }}" data-username="{{ user.username }}">
+                                            <span class="icon"><i class="fas fa-trash-alt"></i></span>
+                                            <span>Delete</span>
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal" id="deleteModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Confirm Deletion</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <p>Are you sure you want to delete user <strong id="delete-username"></strong>?</p>
+            <p class="has-text-danger">This action cannot be undone!</p>
+        </section>
+        <footer class="modal-card-foot">
+            <form id="delete-form" method="post" action="">
+                <button type="submit" class="button is-danger">Delete</button>
+            </form>
+            <button class="button modal-cancel">Cancel</button>
+        </footer>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Delete modal
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('delete-form');
+        const deleteUsername = document.getElementById('delete-username');
+        
+        // Open delete modal
+        const deleteButtons = document.querySelectorAll('.delete-user');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const userId = button.dataset.id;
+                const username = button.dataset.username;
+                
+                deleteUsername.textContent = username;
+                deleteForm.action = '/admin/user/delete/' + userId;
+                deleteModal.classList.add('is-active');
+            });
+        });
+        
+        // Close modal with modal background and delete button
+        const closeModalElements = document.querySelectorAll('.modal-background, .modal-card-head .delete, .modal-cancel');
+        closeModalElements.forEach(element => {
+            element.addEventListener('click', () => {
+                deleteModal.classList.remove('is-active');
+            });
+        });
+    });
+</script>
+{% endblock %} 

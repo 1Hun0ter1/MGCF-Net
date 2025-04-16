@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="columns is-centered">
+    <div class="column is-5-tablet is-4-desktop">
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title is-centered">
+                    <span class="icon mr-2"><i class="fas fa-user-edit"></i></span>
+                    Edit User
+                </p>
+            </header>
+            <div class="card-content">
+                <form method="post" action="{{ url_for('admin_edit_user', id=user.id) }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="field">
+                        <label class="label">{{ form.username.label }}</label>
+                        <div class="control has-icons-left">
+                            {{ form.username(class="input", placeholder="Username") }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </div>
+                        {% for error in form.username.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">{{ form.email.label }}</label>
+                        <div class="control has-icons-left">
+                            {{ form.email(class="input", placeholder="Email") }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </div>
+                        {% for error in form.email.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                {{ form.is_admin() }} {{ form.is_admin.label }}
+                            </label>
+                        </div>
+                        {% if user.is_admin and user.id == current_user.id %}
+                        <p class="help is-warning">Note: Removing your own admin privileges may make admin features unavailable</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="field">
+                        <div class="control">
+                            {{ form.submit(class="button is-primary is-fullwidth") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <footer class="card-footer">
+                <a href="{{ url_for('admin_users') }}" class="card-footer-item">
+                    <span class="icon mr-1"><i class="fas fa-arrow-left"></i></span> Back to User List
+                </a>
+            </footer>
+        </div>
+    </div>
+</div>
+{% endblock %} 

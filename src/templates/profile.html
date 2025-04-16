@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="columns">
+    <div class="column is-4">
+        <div class="card">
+            <div class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2"><i class="fas fa-user"></i></span>
+                    Personal Information
+                </p>
+            </div>
+            <div class="card-content">
+                <div class="content">
+                    <p>
+                        <strong>Username:</strong> {{ user.username }}
+                    </p>
+                    <p>
+                        <strong>Email:</strong> {{ user.email }}
+                    </p>
+                    <p>
+                        <strong>Account Type:</strong> 
+                        {% if user.is_admin %}
+                        <span class="tag is-primary">Administrator</span>
+                        {% else %}
+                        <span class="tag is-info">Regular User</span>
+                        {% endif %}
+                    </p>
+                    <p>
+                        <strong>Registration Time:</strong> {{ user.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    </p>
+                    <p>
+                        <strong>Last Login:</strong> 
+                        {% if user.last_login %}
+                        {{ user.last_login.strftime('%Y-%m-%d %H:%M') }}
+                        {% else %}
+                        --
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="{{ url_for('change_password') }}" class="card-footer-item">
+                    <span class="icon mr-1"><i class="fas fa-key"></i></span>
+                    Change Password
+                </a>
+            </footer>
+        </div>
+    </div>
+    
+    <div class="column is-8">
+        <div class="card">
+            <div class="card-header">
+                <p class="card-header-title">
+                    <span class="icon mr-2"><i class="fas fa-history"></i></span>
+                    Recent Detection History
+                </p>
+            </div>
+            <div class="card-content">
+                {% if history %}
+                <div class="table-container">
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>URL</th>
+                                <th>Detection Result</th>
+                                <th>Confidence</th>
+                                <th>Detection Time</th>
+                                <th>Model Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in history %}
+                            <tr>
+                                <td title="{{ item.url }}">{{ item.url[:30] }}{% if item.url|length > 30 %}...{% endif %}</td>
+                                <td>
+                                    {% if 'phishing' in item.result %}
+                                    <span class="tag is-danger">{{ item.result }}</span>
+                                    {% else %}
+                                    <span class="tag is-success">{{ item.result }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ "%.2f"|format(item.confidence * 100) }}%</td>
+                                <td>{{ item.check_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ item.model_used }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="notification is-info is-light">
+                    <p>You don't have any detection history records yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
