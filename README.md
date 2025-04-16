@@ -38,7 +38,7 @@ cd MGCF-Net
 Ensure you have **Python ≥ 3.8** and install dependencies:
 
 ```bash
-pip install -r requirements.txt
+conda env create -f environment.yaml -n MGCF-Net
 ```
 
 ## 🚀 Usage
