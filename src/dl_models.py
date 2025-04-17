@@ -936,13 +936,13 @@ class DlModels:
         # 手动特征处理
         manual_proj = Dense(64, activation='relu')(manual_input)
 
-        # Cross Attention 简单实现：query 由手动特征生成
         query = Dense(64)(manual_proj)
         key = Dense(64)(url_feat)
         value = Dense(64)(url_feat)
 
-        cross_att = Attention()([query, value])
-        cross_att = Flatten()(cross_att)
+        # cross_att = Attention()([query, value])
+        cross_att = Attention()([query, value, key])
+	cross_att = Flatten()(cross_att)
 
         # 合并所有特征
         merged = Concatenate()([cross_att, url_feat, manual_proj])
@@ -981,12 +981,12 @@ class DlModels:
         # 手动特征处理
         manual_proj = Dense(64, activation='relu')(manual_input)
 
-        # Cross Attention 简单实现：query 由手动特征生成
         query = Dense(64)(manual_proj)
         key = Dense(64)(url_feat)
         value = Dense(64)(url_feat)
 
-        cross_att = Attention()([query, value])
+        # cross_att = Attention()([query, value])
+	cross_att = Attention()([query, value, key])
         cross_att = Flatten()(cross_att)
 
         # 合并所有特征
@@ -1031,7 +1031,7 @@ class DlModels:
         key = Dense(64)(url_feat)
         value = Dense(64)(url_feat)
 
-        cross_att = Attention()([query, value])
+        cross_att = Attention()([query, value, key])
         cross_att = Flatten()(cross_att)
 
         # 合并所有特征
@@ -1097,15 +1097,13 @@ class DlModels:
         # 手动特征处理
         manual_proj = Dense(64, activation='relu')(manual_input)
 
-        # Cross Attention 简单实现：query 由手动特征生成
         query = Dense(64)(manual_proj)
         key = Dense(64)(manual_proj)
         value = Dense(64)(manual_proj)
 
-        cross_att = Attention()([query, value])
+        cross_att = Attention()([query, value, key])
         cross_att = Flatten()(cross_att)
 
-        # 合并所有特征
         merged = Concatenate()([cross_att, manual_proj])
         merged = Dense(128, activation='relu')(merged)
         merged = Dropout(0.4)(merged)
