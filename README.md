@@ -4,7 +4,7 @@
 
 ---
 
-A complete and modular system for **phishing detection**, combining traditional machine learning, deep learning, and handcrafted URL feature engineering. This project is part of a **Secure Cyber Systems** coursework.
+A complete and modular system for **phishing detection**, combining traditional machine learning, deep learning, and handcrafted URL feature engineering. 
 
 ---
 
@@ -169,7 +169,5 @@ You can download the **balanced phishing/legitimate URL dataset** collected from
 ## 🙏 Acknowledgments
 
 If you find this project useful, consider citing or starring 🌟 the repo.
-
-Special thanks to instructors **Arellanes, Damian** and **Ahmed, Hasan** for their guidance throughout this coursework.
 
 This project also benefits from insights and ideas found in related open-source efforts in the phishing detection community, including prior work on dataset structuring and evaluation pipelines (e.g., [dephides](https://github.com/ebubekirbbr/dephides)).
