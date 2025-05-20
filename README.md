@@ -174,7 +174,7 @@ You can download the **balanced phishing/legitimate URL dataset** collected from
 }
 ```
 
-# ⭐️Star History
+## ⭐️Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=1Hun0ter1/MGCF-Net&type=Date)](https://www.star-history.com/#1Hun0ter1/MGCF-Net&Date)
 
